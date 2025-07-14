@@ -201,8 +201,19 @@ class Expense {
             query += ' ORDER BY e.transaction_date DESC, e.created_at DESC';
             query += ' LIMIT ? OFFSET ?';
             
-            const offset = (parseInt(page) - 1) * parseInt(limit);
-            params.push(parseInt(limit), parseInt(offset));
+            const parsedPage = parseInt(page);
+            const parsedLimit = parseInt(limit);
+            const offset = (parsedPage - 1) * parsedLimit;
+            
+            console.log('🔍 分頁計算:', {
+                originalPage: page,
+                originalLimit: limit,
+                parsedPage,
+                parsedLimit,
+                offset
+            });
+            
+            params.push(parsedLimit, offset);
 
             console.log('🔍 最終查詢:', query.trim());
             console.log('🔍 最終參數:', params);
@@ -230,6 +241,14 @@ class Expense {
             };
 
         } catch (error) {
+            console.error('❌ Expense.findByUser 發生錯誤:', error);
+            console.error('❌ 錯誤詳細信息:', {
+                message: error.message,
+                code: error.code,
+                errno: error.errno,
+                sqlState: error.sqlState,
+                sql: error.sql
+            });
             logError('根據使用者查找記帳記錄失敗:', { userId, options, error: error.message });
             throw error;
         }
