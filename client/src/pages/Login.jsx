@@ -11,12 +11,17 @@ import {
   Alert,
   CircularProgress,
   InputAdornment,
-  IconButton
+  IconButton,
+  Container,
+  Paper,
+  Divider,
+  Avatar
 } from '@mui/material';
 import {
   Visibility,
   VisibilityOff,
-  Login as LoginIcon
+  Login as LoginIcon,
+  AccountBalance as BookIcon
 } from '@mui/icons-material';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -100,103 +105,230 @@ const Login = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        bgcolor: 'background.default',
-        p: 2
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        position: 'relative',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'radial-gradient(circle at 30% 20%, rgba(255,255,255,0.1) 0%, transparent 50%)',
+          pointerEvents: 'none'
+        }
       }}
     >
-      <Card
-        sx={{
-          maxWidth: 400,
-          width: '100%',
-          boxShadow: 3
-        }}
-      >
-        <CardContent sx={{ p: 4 }}>
-          {/* 標題 */}
-          <Box sx={{ textAlign: 'center', mb: 4 }}>
-            <Typography variant="h4" component="h1" gutterBottom>
-              📊 Bookwise
-            </Typography>
-            <Typography variant="h6" color="text.secondary">
-              歡迎回來
-            </Typography>
-          </Box>
-
-          {/* 登入表單 */}
-          <Box component="form" onSubmit={handleSubmit} noValidate>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="loginField"
-              label="使用者名稱或電子信箱"
-              name="loginField"
-              autoComplete="username"
-              autoFocus
-              value={formData.loginField}
-              onChange={handleChange}
-              error={!!errors.loginField}
-              helperText={errors.loginField}
-              disabled={isSubmitting}
-            />
-            
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="密碼"
-              type={showPassword ? 'text' : 'password'}
-              id="password"
-              autoComplete="current-password"
-              value={formData.password}
-              onChange={handleChange}
-              error={!!errors.password}
-              helperText={errors.password}
-              disabled={isSubmitting}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleTogglePasswordVisibility}
-                      edge="end"
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              size="large"
-              disabled={isSubmitting}
-              startIcon={isSubmitting ? <CircularProgress size={20} /> : <LoginIcon />}
-              sx={{ mt: 3, mb: 2, py: 1.5 }}
-            >
-              {isSubmitting ? '登入中...' : '登入'}
-            </Button>
-
-            <Box sx={{ textAlign: 'center', mt: 2 }}>
-              <Typography variant="body2" color="text.secondary">
-                還沒有帳號？{' '}
-                <Link
-                  component={RouterLink}
-                  to="/register"
-                  variant="body2"
-                  sx={{ textDecoration: 'none' }}
-                >
-                  立即註冊
-                </Link>
+      <Container maxWidth="sm">
+        <Paper
+          elevation={24}
+          sx={{
+            maxWidth: 440,
+            width: '100%',
+            margin: '0 auto',
+            borderRadius: 4,
+            overflow: 'hidden',
+            background: 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)'
+          }}
+        >
+          <CardContent sx={{ p: 5 }}>
+            {/* 標題區域 */}
+            <Box sx={{ textAlign: 'center', mb: 4 }}>
+              <Avatar
+                sx={{
+                  width: 64,
+                  height: 64,
+                  mx: 'auto',
+                  mb: 2,
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  boxShadow: '0 4px 20px rgba(102, 126, 234, 0.4)'
+                }}
+              >
+                <BookIcon sx={{ fontSize: 32, color: 'white' }} />
+              </Avatar>
+              
+              <Typography 
+                variant="h4" 
+                component="h1" 
+                gutterBottom
+                sx={{
+                  fontWeight: 700,
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  backgroundClip: 'text',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  mb: 1
+                }}
+              >
+                Bookwise
+              </Typography>
+              
+              <Typography 
+                variant="h6" 
+                sx={{ 
+                  color: 'text.secondary',
+                  fontWeight: 400,
+                  mb: 1
+                }}
+              >
+                歡迎回來
+              </Typography>
+              
+              <Typography 
+                variant="body2" 
+                sx={{ 
+                  color: 'text.secondary',
+                  opacity: 0.8
+                }}
+              >
+                請登入您的帳戶以繼續使用
               </Typography>
             </Box>
-          </Box>
-        </CardContent>
-      </Card>
+
+            {/* 登入表單 */}
+            <Box component="form" onSubmit={handleSubmit} noValidate>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="loginField"
+                label="使用者名稱或電子信箱"
+                name="loginField"
+                autoComplete="username"
+                autoFocus
+                value={formData.loginField}
+                onChange={handleChange}
+                error={!!errors.loginField}
+                helperText={errors.loginField}
+                disabled={isSubmitting}
+                sx={{
+                  mb: 2,
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: 2,
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      boxShadow: '0 4px 12px rgba(102, 126, 234, 0.15)'
+                    },
+                    '&.Mui-focused': {
+                      boxShadow: '0 4px 12px rgba(102, 126, 234, 0.25)'
+                    }
+                  }
+                }}
+              />
+              
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="密碼"
+                type={showPassword ? 'text' : 'password'}
+                id="password"
+                autoComplete="current-password"
+                value={formData.password}
+                onChange={handleChange}
+                error={!!errors.password}
+                helperText={errors.password}
+                disabled={isSubmitting}
+                sx={{
+                  mb: 3,
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: 2,
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      boxShadow: '0 4px 12px rgba(102, 126, 234, 0.15)'
+                    },
+                    '&.Mui-focused': {
+                      boxShadow: '0 4px 12px rgba(102, 126, 234, 0.25)'
+                    }
+                  }
+                }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleTogglePasswordVisibility}
+                        edge="end"
+                        sx={{
+                          color: 'text.secondary',
+                          '&:hover': {
+                            color: 'primary.main'
+                          }
+                        }}
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                size="large"
+                disabled={isSubmitting}
+                startIcon={isSubmitting ? <CircularProgress size={20} color="inherit" /> : <LoginIcon />}
+                sx={{
+                  mt: 1,
+                  mb: 3,
+                  py: 1.8,
+                  borderRadius: 2,
+                  fontSize: '1.1rem',
+                  fontWeight: 600,
+                  textTransform: 'none',
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  boxShadow: '0 4px 20px rgba(102, 126, 234, 0.4)',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
+                    boxShadow: '0 6px 25px rgba(102, 126, 234, 0.5)',
+                    transform: 'translateY(-2px)'
+                  },
+                  '&:disabled': {
+                    background: 'rgba(102, 126, 234, 0.6)',
+                    boxShadow: 'none',
+                    transform: 'none'
+                  }
+                }}
+              >
+                {isSubmitting ? '登入中...' : '登入'}
+              </Button>
+
+              <Divider sx={{ my: 2, opacity: 0.6 }} />
+
+              <Box sx={{ textAlign: 'center' }}>
+                <Typography variant="body2" color="text.secondary">
+                  還沒有帳號？{' '}
+                  <Link
+                    component={RouterLink}
+                    to="/register"
+                    sx={{
+                      textDecoration: 'none',
+                      fontWeight: 600,
+                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                      backgroundClip: 'text',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      transition: 'all 0.3s ease',
+                      '&:hover': {
+                        textDecoration: 'underline'
+                      }
+                    }}
+                  >
+                    立即註冊
+                  </Link>
+                </Typography>
+              </Box>
+            </Box>
+          </CardContent>
+        </Paper>
+      </Container>
     </Box>
   );
 };
