@@ -6,11 +6,11 @@ const { logError, logInfo } = require('../utils/logger');
 
 // 資料庫連線配置
 const dbConfig = {
-    host: process.env.DB_HOST || 'localhost',
+    host: process.env.DB_HOST || 'mysql.railway.internal',
     port: process.env.DB_PORT || 3306,
     user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '',
-    database: process.env.DB_NAME || 'bookwise',
+    password: process.env.DB_PASSWORD || 'ziYjdllesNJHAiQupdvQnWZRlrCXBfPg',
+    database: process.env.DB_NAME || 'railway',
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,

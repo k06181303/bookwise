@@ -50,6 +50,14 @@ app.post('/api/init-db', async (req, res) => {
         console.log('   DB_NAME:', process.env.DB_NAME);
         console.log('   DB_PASSWORD:', process.env.DB_PASSWORD ? '***已設置***' : '未設置');
         
+        // 調試：顯示所有環境變數
+        console.log('🔍 所有環境變數:');
+        Object.keys(process.env).forEach(key => {
+            if (key.startsWith('DB_') || key.startsWith('MYSQL')) {
+                console.log(`   ${key}:`, process.env[key]);
+            }
+        });
+        
         // 先測試連接
         await testConnection();
         console.log('✅ 連接測試成功');
