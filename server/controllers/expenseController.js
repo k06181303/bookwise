@@ -39,8 +39,14 @@ const getExpenses = async (req, res) => {
         });
 
     } catch (error) {
+        console.error('❌ 獲取記帳記錄列表失敗:', error);
+        console.error('❌ 錯誤堆疊:', error.stack);
+        console.error('❌ 用戶ID:', req.user?.id);
+        console.error('❌ 查詢參數:', req.query);
+        
         logError('獲取記帳記錄列表失敗:', {
             error: error.message,
+            stack: error.stack,
             userId: req.user?.id,
             query: req.query,
             ip: req.ip
@@ -48,7 +54,8 @@ const getExpenses = async (req, res) => {
 
         res.status(500).json({
             error: '獲取記帳記錄失敗',
-            message: '伺服器內部錯誤'
+            message: '伺服器內部錯誤',
+            debug: process.env.NODE_ENV === 'development' ? error.message : undefined
         });
     }
 };
@@ -326,8 +333,14 @@ const getStatistics = async (req, res) => {
         });
 
     } catch (error) {
+        console.error('❌ 獲取統計資料失敗:', error);
+        console.error('❌ 錯誤堆疊:', error.stack);
+        console.error('❌ 用戶ID:', req.user?.id);
+        console.error('❌ 查詢參數:', req.query);
+        
         logError('獲取統計資料失敗:', {
             error: error.message,
+            stack: error.stack,
             userId: req.user?.id,
             query: req.query,
             ip: req.ip
@@ -335,7 +348,8 @@ const getStatistics = async (req, res) => {
 
         res.status(500).json({
             error: '獲取統計資料失敗',
-            message: '伺服器內部錯誤'
+            message: '伺服器內部錯誤',
+            debug: process.env.NODE_ENV === 'development' ? error.message : undefined
         });
     }
 };
