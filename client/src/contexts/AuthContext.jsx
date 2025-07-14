@@ -72,7 +72,7 @@ export const AuthProvider = ({ children }) => {
         severity: 'success'
       });
 
-      navigate('/dashboard');
+      // 不在這裡導航，讓 Login 頁面控制跳轉
       return { success: true };
     } catch (error) {
       const message = error.response?.data?.message || '登入失敗，請檢查帳號密碼';

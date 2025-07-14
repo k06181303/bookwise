@@ -93,7 +93,7 @@ function App() {
                 </Route>
                 
                 {/* 404 頁面 */}
-                <Route path="*" element={<Navigate to="/dashboard" replace />} />
+                <Route path="*" element={<Navigate to="/login" replace />} />
               </Routes>
             </ExpenseProvider>
           </AuthProvider>

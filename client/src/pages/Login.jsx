@@ -85,6 +85,9 @@ const Login = () => {
       const result = await login(formData.loginField, formData.password);
       if (result.success) {
         navigate(from, { replace: true });
+      } else {
+        // 登入失敗時不要跳轉，AuthContext 會顯示錯誤提醒
+        console.log('登入失敗:', result.error);
       }
     } catch (error) {
       console.error('登入失敗:', error);
