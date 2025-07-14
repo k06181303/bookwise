@@ -12,7 +12,6 @@ import {
   CircularProgress,
   InputAdornment,
   IconButton,
-  Container,
   Paper,
   Divider,
   Avatar
@@ -102,11 +101,14 @@ const Login = () => {
     <Box
       sx={{
         minHeight: '100vh',
+        width: '100vw',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
         position: 'relative',
+        padding: 2,
+        boxSizing: 'border-box',
         '&::before': {
           content: '""',
           position: 'absolute',
@@ -119,21 +121,21 @@ const Login = () => {
         }
       }}
     >
-      <Container maxWidth="sm">
-        <Paper
-          elevation={24}
-          sx={{
-            maxWidth: 440,
-            width: '100%',
-            margin: '0 auto',
-            borderRadius: 4,
-            overflow: 'hidden',
-            background: 'rgba(255, 255, 255, 0.95)',
-            backdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)'
-          }}
-        >
+      <Paper
+        elevation={24}
+        sx={{
+          width: '100%',
+          maxWidth: 440,
+          borderRadius: 4,
+          overflow: 'hidden',
+          background: 'rgba(255, 255, 255, 0.95)',
+          backdropFilter: 'blur(20px)',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+          position: 'relative',
+          zIndex: 1
+        }}
+      >
           <CardContent sx={{ p: 5 }}>
             {/* 標題區域 */}
             <Box sx={{ textAlign: 'center', mb: 4 }}>
@@ -328,7 +330,6 @@ const Login = () => {
             </Box>
           </CardContent>
         </Paper>
-      </Container>
     </Box>
   );
 };
