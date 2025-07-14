@@ -213,7 +213,8 @@ class Expense {
                 offset
             });
             
-            params.push(parsedLimit, offset);
+            // mysql2 的 execute 方法需要 String 類型的 LIMIT 和 OFFSET
+            params.push(parsedLimit.toString(), offset.toString());
 
             console.log('🔍 最終查詢:', query.trim());
             console.log('🔍 最終參數:', params);
