@@ -141,18 +141,36 @@ class Expense {
             }
 
             // 計算總數（用於分頁）
-            const countQuery = `
+            let countQuery = `
                 SELECT COUNT(*) as total
                 FROM expenses e
                 JOIN categories c ON e.category_id = c.id
                 WHERE e.user_id = ?
-                ${startDate ? ' AND e.transaction_date >= ?' : ''}
-                ${endDate ? ' AND e.transaction_date <= ?' : ''}
-                ${categoryId ? ' AND e.category_id = ?' : ''}
-                ${type ? ' AND c.type = ?' : ''}
             `;
+            const countParams = [userId];
 
-            const [countResult] = await executeQuery(countQuery, params);
+            // 添加相同的篩選條件到計數查詢
+            if (startDate) {
+                countQuery += ' AND e.transaction_date >= ?';
+                countParams.push(startDate);
+            }
+
+            if (endDate) {
+                countQuery += ' AND e.transaction_date <= ?';
+                countParams.push(endDate);
+            }
+
+            if (categoryId) {
+                countQuery += ' AND e.category_id = ?';
+                countParams.push(categoryId);
+            }
+
+            if (type) {
+                countQuery += ' AND c.type = ?';
+                countParams.push(type);
+            }
+
+            const [countResult] = await executeQuery(countQuery, countParams);
             const total = countResult.total;
 
             // 添加排序和分頁
