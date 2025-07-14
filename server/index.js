@@ -40,19 +40,47 @@ app.use('/api/expenses', expenseRoutes);
 app.post('/api/init-db', async (req, res) => {
     try {
         console.log('🚀 開始初始化資料庫...');
+        
+        // 顯示當前資料庫配置
+        console.log('📋 資料庫配置:');
+        console.log('   DB_HOST:', process.env.DB_HOST);
+        console.log('   DB_PORT:', process.env.DB_PORT);
+        console.log('   DB_USER:', process.env.DB_USER);
+        console.log('   DB_NAME:', process.env.DB_NAME);
+        console.log('   DB_PASSWORD:', process.env.DB_PASSWORD ? '***已設置***' : '未設置');
+        
+        // 先測試連接
+        await testConnection();
+        console.log('✅ 連接測試成功');
+        
+        // 執行初始化
         await initializeTables();
         console.log('✅ 資料庫初始化完成！');
+        
         res.json({ 
             success: true, 
             message: '資料庫初始化成功',
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
+            config: {
+                host: process.env.DB_HOST,
+                port: process.env.DB_PORT,
+                user: process.env.DB_USER,
+                database: process.env.DB_NAME
+            }
         });
     } catch (error) {
         console.error('❌ 資料庫初始化失敗:', error.message);
+        console.error('❌ 錯誤堆疊:', error.stack);
         res.status(500).json({ 
             success: false, 
             message: '資料庫初始化失敗',
-            error: error.message 
+            error: error.message,
+            config: {
+                host: process.env.DB_HOST,
+                port: process.env.DB_PORT,
+                user: process.env.DB_USER,
+                database: process.env.DB_NAME
+            }
         });
     }
 });
