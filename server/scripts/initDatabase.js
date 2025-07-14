@@ -1,7 +1,5 @@
-// 在生產環境中，Railway 會直接提供環境變數
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config();
-}
+// Railway 會直接提供環境變數，不需要 dotenv
+// require('dotenv').config();
 const { testConnection, initializeTables } = require('../config/database');
 const { logInfo, logError } = require('../utils/logger');
 
