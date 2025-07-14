@@ -101,6 +101,9 @@ class Expense {
      */
     static async findByUser(userId, options = {}) {
         try {
+            console.log('🔍 Expense.findByUser 開始執行');
+            console.log('🔍 原始參數:', { userId, options });
+            
             const {
                 page = 1,
                 limit = 20,
@@ -110,6 +113,14 @@ class Expense {
                 type // 'income' 或 'expense'
             } = options;
 
+            console.log('🔍 解構後的參數:', { page, limit, startDate, endDate, categoryId, type });
+            console.log('🔍 參數類型:', { 
+                page: typeof page, 
+                limit: typeof limit, 
+                userId: typeof userId,
+                categoryId: typeof categoryId 
+            });
+
             // 建立基本查詢
             let query = `
                 SELECT e.*, c.name as category_name, c.type as category_type, c.color as category_color
@@ -118,27 +129,36 @@ class Expense {
                 WHERE e.user_id = ?
             `;
             const params = [userId];
+            console.log('🔍 初始查詢:', query.trim());
+            console.log('🔍 初始參數:', params);
 
             // 添加篩選條件
             if (startDate) {
                 query += ' AND e.transaction_date >= ?';
                 params.push(startDate);
+                console.log('🔍 添加 startDate 條件:', startDate);
             }
 
             if (endDate) {
                 query += ' AND e.transaction_date <= ?';
                 params.push(endDate);
+                console.log('🔍 添加 endDate 條件:', endDate);
             }
 
             if (categoryId) {
                 query += ' AND e.category_id = ?';
                 params.push(categoryId);
+                console.log('🔍 添加 categoryId 條件:', categoryId);
             }
 
             if (type) {
                 query += ' AND c.type = ?';
                 params.push(type);
+                console.log('🔍 添加 type 條件:', type);
             }
+
+            console.log('🔍 篩選條件添加後的查詢:', query.trim());
+            console.log('🔍 篩選條件添加後的參數:', params);
 
             // 計算總數（用於分頁）
             let countQuery = `
@@ -170,17 +190,32 @@ class Expense {
                 countParams.push(type);
             }
 
+            console.log('🔍 執行計數查詢:', countQuery.trim());
+            console.log('🔍 計數查詢參數:', countParams);
+            
             const [countResult] = await executeQuery(countQuery, countParams);
             const total = countResult.total;
+            console.log('🔍 查詢到的總數:', total);
 
             // 添加排序和分頁
             query += ' ORDER BY e.transaction_date DESC, e.created_at DESC';
             query += ' LIMIT ? OFFSET ?';
             
-            const offset = (page - 1) * limit;
-            params.push(limit, offset);
+            const offset = (parseInt(page) - 1) * parseInt(limit);
+            params.push(parseInt(limit), parseInt(offset));
+
+            console.log('🔍 最終查詢:', query.trim());
+            console.log('🔍 最終參數:', params);
+            console.log('🔍 參數詳細資訊:', {
+                userId: params[0],
+                limit: params[params.length - 2],
+                offset: params[params.length - 1],
+                '參數總數': params.length,
+                '查詢中的?數量': (query.match(/\?/g) || []).length
+            });
 
             const results = await executeQuery(query, params);
+            console.log('🔍 查詢結果數量:', results.length);
             const expenses = results.map(expense => new Expense(expense));
 
             return {

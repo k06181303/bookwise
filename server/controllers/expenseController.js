@@ -27,6 +27,12 @@ const getExpenses = async (req, res) => {
             type
         };
 
+        console.log('🔍 調用 Expense.findByUser 前的參數:');
+        console.log('userId:', userId, typeof userId);
+        console.log('options:', options);
+        console.log('page:', options.page, typeof options.page);
+        console.log('limit:', options.limit, typeof options.limit);
+
         const result = await Expense.findByUser(userId, options);
 
         res.json({
