@@ -1,8 +1,5 @@
 providers = ["node"]
 
-[phases.setup]
-nixPkgs = ["nodejs-18_x", "npm-10_x"]
-
 [phases.install]
 cmd = "cd server && npm install"
 
