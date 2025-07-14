@@ -28,10 +28,34 @@ const authRoutes = require('./routes/auth');
 const categoryRoutes = require('./routes/categories');
 const expenseRoutes = require('./routes/expenses');
 
+// 導入資料庫初始化函數
+const { initializeTables } = require('./config/database');
+
 // API 路由
 app.use('/api/auth', authRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/expenses', expenseRoutes);
+
+// 資料庫初始化端點
+app.post('/api/init-db', async (req, res) => {
+    try {
+        console.log('🚀 開始初始化資料庫...');
+        await initializeTables();
+        console.log('✅ 資料庫初始化完成！');
+        res.json({ 
+            success: true, 
+            message: '資料庫初始化成功',
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        console.error('❌ 資料庫初始化失敗:', error.message);
+        res.status(500).json({ 
+            success: false, 
+            message: '資料庫初始化失敗',
+            error: error.message 
+        });
+    }
+});
 
 // 基本路由
 app.get('/', (req, res) => {
