@@ -1,4 +1,7 @@
-require('dotenv').config();
+// 在生產環境中，Railway 會直接提供環境變數
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
 const express = require('express');
 const cors = require('cors');
 const { logError, logInfo } = require('./utils/logger');

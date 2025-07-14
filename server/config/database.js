@@ -1,6 +1,11 @@
 const mysql = require('mysql2/promise');
 const { logError, logInfo } = require('../utils/logger');
 
+// 在生產環境中，Railway 會直接提供環境變數
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
+
 // 資料庫連線配置
 const dbConfig = {
     host: process.env.DB_HOST || 'localhost',
